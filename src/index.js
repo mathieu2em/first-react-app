@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 
+
 function Square(props) {
     return (
         <button className="square" onClick={props.onClick}>
@@ -52,6 +53,7 @@ class Game extends React.Component {
             history: [{
                 squares: Array(9).fill(null),
             }],
+            locations: [],
             stepNumber: 0,
             xIsNext: true,
         };
@@ -67,7 +69,8 @@ class Game extends React.Component {
         squares[i] = this.state.xIsNext? 'X' : 'O';
         this.setState({
             history: history.concat([{
-                squares: squares
+                squares: squares,
+                loc:  i
             }]),
             stepNumber: history.length,
             xIsNext: !this.state.xIsNext,
@@ -90,11 +93,14 @@ class Game extends React.Component {
             const desc = move ?
                 'Go to move #' + move :
                 'Go to game start';
+            const pos = move? ('(' + Math.ceil((step.loc+1)/3)+
+                ',' + ((step.loc%3)+1) + ')') : '';
             return (
                 <li key={move}>
                     <button onClick={() => this.jumpTo(move)}>
                         {desc}
                     </button>
+                    <text>{pos}</text>
                 </li>
             );
         });
